@@ -1,0 +1,122 @@
+<div class="bg-green-100 text-green-800 p-4 rounded-lg" [hidden]="!isLoggedIn" role="alert" id="Success-Alert">
+  <strong class="font-bold text-sm">Success!</strong>
+  <span class="block text-sm sm:inline max-sm:mt-2 max-sm:ml-0 ml-4 mr-8">Login Successfull.</span>
+  <svg xmlns="http://www.w3.org/2000/svg"
+    class="w-7 hover:bg-green-200 rounded-lg transition-all p-2 cursor-pointer fill-green-500 absolute right-4 top-1/2 -translate-y-1/2" viewBox="0 0 320.591 320.591">
+    <path
+      d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+      data-original="#000000" />
+    <path
+      d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+      data-original="#000000" />
+  </svg>
+</div>
+
+<div class="login bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white rounded-xl shadow-lg p-10">
+          <!-- Logo or Brand -->
+          <div class="text-center">
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-2">Welcome Back</h2>
+            <p class="text-gray-600">Please sign in to continue</p>
+          </div>
+      
+          <!-- Login Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+            <!-- Email Field -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              <div class="mt-1">
+                <input id="email" 
+                       formControlName="email" 
+                       type="email" 
+                       class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                       placeholder="Enter your email">
+              </div>
+              <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']" 
+                   class="mt-1 text-sm text-red-500">
+                Email is required
+              </div>
+              <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']" 
+                   class="mt-1 text-sm text-red-500">
+                Please enter a valid email
+              </div>
+            </div>
+      
+            <!-- Password Field -->
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+              <div class="mt-1">
+                <input id="password" 
+                       formControlName="password" 
+                       type="password" 
+                       class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                       placeholder="Enter your password">
+              </div>
+              <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']" 
+                   class="mt-1 text-sm text-red-500">
+                Password is required
+              </div>
+            </div>
+      
+            <!-- Remember Me & Forgot Password -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input id="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-blue-400 border-gray-300 rounded">
+                <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+              </div>
+              <a href="#" class="text-sm font-medium text-blue-600 hover:text-indigo-500">Forgot password?</a>
+            </div>
+      
+            <!-- Submit Button -->
+            <button type="submit"
+                    [disabled]="false"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#007bff] hover:bg-[#007bff] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span *ngIf="!isLoading">Sign In</span>
+              <span *ngIf="isLoading" class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            </button>
+      
+            <!-- Social Login Divider -->
+            <div class="relative my-6">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+      
+            <!-- Social Login Buttons -->
+            <div class="grid grid-cols-3 gap-3">
+              <button type="button" (click)="googleLogin()"
+                      class="inline-flex justify-center items-center py-2.5 px-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <img width="35" height="35" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
+              </button>
+              <button type="button" 
+                      class="inline-flex justify-center items-center py-2.5 px-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <img width="35" height="35" src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new"/>
+              </button>
+              <button type="button" (click)="githubLogin()"
+                      class="inline-flex justify-center items-center py-2.5 px-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <img width="35" height="35" src="https://img.icons8.com/ios-glyphs/30/github.png" alt="github"/>
+              </button>
+            </div>
+          </form>
+      
+          <!-- Register Link -->
+          <div class="text-center mt-4">
+            <p class="text-sm text-gray-600">
+              Don't have an account?
+              <a href="register" routerLink="register" class="font-medium text-blue-600 hover:text-blue-500">Sign up</a>
+            </p>
+          </div>
+        </div>
+      </div>
+</div>
+
