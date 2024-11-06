@@ -1,7 +1,11 @@
-<div class="bg-gray-100">
+<div
+  class="bg-cover bg-center h-screen w-screen"
+  style="background-image: url('assets/back-vector.png')"
+>
   <div
-    class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen flex items-center space-x-20 justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
+    <!-- Register -->
     <div class="max-w-md w-full space-y-8 bg-white rounded-xl shadow-lg p-10">
       <div class="text-center mb-12">
         <a href="javascript:void(0)"
@@ -10,105 +14,227 @@
       </div>
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="space-y-6">
-          <!-- Username -->
-          <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-            <div class="mt-1">
-              <input id="username" 
-                     formControlName="username" 
-                     type="text" 
-                     class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
-                     placeholder="Enter your password">
+        <div *ngIf="currentStep === 1">
+          <div class="space-y-6">
+            <!-- First Name -->
+            <div>
+              <label
+                for="firstname"
+                class="block text-sm font-medium text-gray-700"
+                >First Name</label
+              >
+              <div class="mt-1">
+                <input
+                  id="firstname"
+                  formControlName="firstname"
+                  type="text"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Enter your first name"
+                />
+              </div>
+              <div
+                *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.errors?.['required']"
+                class="mt-1 text-sm text-red-500"
+              >
+                First name is required
+              </div>
             </div>
-            <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']" 
-                 class="mt-1 text-sm text-red-500">
-              Username is required
+            <div>
+              <label for="lastname" class="block text-sm font-medium text-gray-700"
+                >Last Name</label
+              >
+              <div class="mt-1">
+                <input
+                  id="lastname"
+                  formControlName="lastname"
+                  type="text"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Enter your last name"
+                />
+              </div>
+              <div
+                *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.errors?.['required']"
+                class="mt-1 text-sm text-red-500"
+              >
+                Last name is required
             </div>
-          </div>
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700"
-              >Email</label
-            >
-            <div class="mt-1">
-              <input
-                id="email"
-                formControlName="email"
-                type="email"
-                class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div
-              *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
-              class="mt-1 text-sm text-red-500"
-            >
-              Email is required
-            </div>
-            <div
-              *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']"
-              class="mt-1 text-sm text-red-500"
-            >
-              Please enter a valid email
-            </div>
-          </div>
-          <!-- Password -->
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <div class="mt-1">
-              <input id="password" 
-                     formControlName="password" 
-                     type="password" 
-                     class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
-                     placeholder="Enter your password">
-            </div>
-            <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']" 
-                 class="mt-1 text-sm text-red-500">
-              Password is required
             </div>
           </div>
+        </div>
 
-          <!-- Confirm Password -->
-          <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <div class="mt-1">
-              <input id="confirmPassword" 
-                     formControlName="confirmPassword" 
-                     type="password" 
-                     class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
-                     placeholder="Re-Enter your password">
+        <div *ngIf="currentStep === 2">
+          <div class="space-y-6">
+            <!-- Username -->
+            <div>
+              <label
+                for="username"
+                class="block text-sm font-medium text-gray-700"
+                >Username</label
+              >
+              <div class="mt-1">
+                <input
+                  id="username"
+                  formControlName="username"
+                  type="text"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Enter your username"
+                />
+              </div>
+              <div
+                *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']"
+                class="mt-1 text-sm text-red-500"
+              >
+                Username is required
+              </div>
             </div>
-            <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']" 
-                 class="mt-1 text-sm text-red-500">
-              Password is required
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700"
+                >Email</label
+              >
+              <div class="mt-1">
+                <input
+                  id="email"
+                  formControlName="email"
+                  type="email"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']"
+                class="mt-1 text-sm text-red-500"
+              >
+                Email is required
+              </div>
+              <div
+                *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']"
+                class="mt-1 text-sm text-red-500"
+              >
+                Please enter a valid email
+              </div>
+            </div>
+            <!-- Password -->
+            <div>
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700"
+                >Password</label
+              >
+              <div class="mt-1">
+                <input
+                  id="password"
+                  formControlName="password"
+                  type="password"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Enter your password"
+                />
+              </div>
+              <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')">
+                <small class="text-red-500">Password must be at least 5 characters long.</small>
+              </div>
+              <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')">
+                <small class="text-red-500">Password is required.</small>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+              <label
+                for="confirmPassword"
+                class="block text-sm font-medium text-gray-700"
+                >Confirm Password</label
+              >
+              <div class="mt-1">
+                <input
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  type="password"
+                  class="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-transparent"
+                  placeholder="Re-Enter your password"
+                />
+              </div>
+              <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('minlength')">
+                <small class="text-red-500">Confirm Password must be at least 5 characters long.</small>
+              </div>
+              <div *ngIf="registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched">
+                <small class="text-red-500">Passwords do not match.</small>
+              </div>
             </div>
           </div>
+        </div>
 
+        <div *ngIf="currentStep === 3 || currentStep > 3">
           <div class="flex items-center">
             <input
               id="remember-me"
               name="remember-me"
               type="checkbox"
               class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              #rememberMe
+              (change)="onCheckboxChange(rememberMe.checked)"
             />
             <label for="remember-me" class="text-gray-800 ml-3 block text-sm">
               I accept the
-              <a
-                class="text-[#007bff] font-semibold hover:underline ml-1"
+              <a class="text-[#007bff] font-semibold hover:underline ml-1"
                 >Terms and Conditions</a
               >
             </label>
           </div>
         </div>
 
-        <div class="!mt-12">
+        <!-- Buttons -->
+        <div class="flex justify-between mt-6 space-x-6">
           <button
             type="button"
-            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#007bff] hover:bg-[#007bff] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="text-blue-500"
+            *ngIf="currentStep > 1"
+            (click)="previousStep()"
           >
-            Create an account
+            Previous
           </button>
+          <button
+            type="button"
+            class="text-white bg-blue-500 px-6 py-2 rounded"
+            (click)="nextStep()"
+            *ngIf="currentStep < 3"
+          >
+            Next
+          </button>
+
+          <!-- Submit Button -->
+        <button
+        type="submit" [disabled]="isLoading"
+        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#007bff] hover:bg-[#007bff] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        *ngIf="currentStep == 3 || currentStep > 3"
+      >
+        <span *ngIf="!isLoading">Create an account</span>
+        <span *ngIf="isLoading" class="flex items-center">
+          <svg
+            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Processing...
+        </span>
+      </button>
         </div>
+
+       
         <p class="text-gray-800 text-sm mt-6 text-center">
           Already have an account?
           <a
@@ -118,6 +244,124 @@
           >
         </p>
       </form>
+    </div>
+
+    <!-- Stepper -->
+    <div
+      class="flex items-center flex-col justify-center font-[sans-serif] w-max"
+    >
+      <div class="flex items-center flex-col relative">
+        <div class="absolute top-0 left-full ml-4 w-max">
+          <p class="text-[10px] font-bold text-gray-400">STEP 1</p>
+          <h6
+            class="text-base font-bold text-[#808080]"
+            *ngIf="currentStep === 1"
+          >
+            Basic details
+          </h6>
+          <h6 class="text-base font-bold text-[#000]" *ngIf="currentStep > 1">
+            Basic details
+          </h6>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep === 1"
+        >
+          <span class="w-3 h-3 bg-gray-300 rounded-full"></span>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 border-green-500 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep > 1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-full fill-green-500"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
+              data-original="#000000"
+            />
+          </svg>
+        </div>
+        <div class="w-1 h-16 bg-gray-300" *ngIf="currentStep === 1"></div>
+        <div class="w-1 h-16 bg-green-500" *ngIf="currentStep > 1"></div>
+      </div>
+      <div class="flex items-center flex-col relative">
+        <div class="absolute top-0 left-full ml-4 w-max">
+          <p class="text-[10px] font-bold text-gray-400">STEP 2</p>
+          <h6
+            class="text-base font-bold text-[#808080]"
+            *ngIf="currentStep === 2 || currentStep < 2"
+          >
+            Security details
+          </h6>
+          <h6 class="text-base font-bold text-[#000]" *ngIf="currentStep > 2">
+            Security details
+          </h6>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep === 2 || currentStep < 2"
+        >
+          <span class="w-3 h-3 bg-gray-300 rounded-full"></span>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 border-green-500 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep > 2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-full fill-green-500"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
+              data-original="#000000"
+            />
+          </svg>
+        </div>
+        <div
+          class="w-1 h-16 bg-gray-300"
+          *ngIf="currentStep === 2 || currentStep < 2"
+        ></div>
+        <div class="w-1 h-16 bg-green-500" *ngIf="currentStep > 2"></div>
+      </div>
+      <div class="flex items-center flex-col relative">
+        <div class="absolute top-0 left-full ml-4 w-max">
+          <p class="text-[10px] font-bold text-gray-400">STEP 3</p>
+          <h6
+            class="text-base font-bold text-[#808080]"
+            *ngIf="currentStep === 3 || currentStep < 3"
+          >
+            Terms and conditions
+          </h6>
+          <h6 class="text-base font-bold text-[#000]" *ngIf="currentStep > 3">
+            Terms and conditions
+          </h6>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep === 3 || currentStep < 3"
+        >
+          <span class="w-3 h-3 bg-gray-300 rounded-full"></span>
+        </div>
+        <div
+          class="w-8 h-8 shrink-0 mx-[-1px] border-2 border-green-500 p-1.5 flex items-center justify-center rounded-full"
+          *ngIf="currentStep > 3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-full fill-green-500"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"
+              data-original="#000000"
+            />
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 </div>

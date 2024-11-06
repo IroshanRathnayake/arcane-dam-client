@@ -43,18 +43,28 @@ export class LoginComponent {
         console.log('Login successful');
         this.isLoggedIn = true;
         this.router.navigate(['dashboard']);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Login Successful",
-          showConfirmButton: false,
-          timer: 1500
-        });
+        setTimeout(() => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Login Successful",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }, 3500);
       },
       error: (error) => {
         this.isLoading = false;
         this.error = error.error.message || 'An error occurred during login';
-        Swal.fire({
+
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-5 rounded",
+          },
+          buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
           title: "Login Failed",
           text: this.error,
           icon: "error",

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User, AuthResponse } from '../models/user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,11 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
   private readonly API_URL = `http://localhost:8083`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router:Router) {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
-      this.currentUserSubject.next(JSON.parse(savedUser));
+      const parsedUser: AuthResponse = JSON.parse(savedUser);
+      this.currentUserSubject.next(parsedUser.user);
     }
   }
 
@@ -24,13 +26,13 @@ export class AuthService {
       .pipe(tap((response) => console.log(response)));
   }
 
-  login(email: string, password: string): Observable<string> {
+  login(email: string, password: string): Observable<AuthResponse> {
     return this.http
-      .post<string>(
+      .post<AuthResponse>(
         `${this.API_URL}/login`,
         { email, password },
         {
-          responseType: 'text' as 'json',
+          responseType: 'json',
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
           }),
@@ -38,26 +40,32 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          localStorage.setItem('token', response);
+          localStorage.setItem('token', response.accessToken);
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          this.currentUserSubject.next(response.user);
         })
       );
   }
 
   googleAuth(): void {
     window.location.href = 'http://localhost:8083/oauth2/authorization/google';
-    this.http
-      .get('http://localhost:8083/oauth2/authorization/google')
-      .subscribe((data) => console.log(data));
   }
 
   githubAuth(): void {
     window.location.href = 'http://localhost:8083/oauth2/authorization/github';
   }
 
-  register(user: Omit<User, 'id'>): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/register`, user).pipe(
+  register(user: User): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/register`, user,
+      {
+      responseType: 'json',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    }).pipe(
       tap((response) => {
-        localStorage.setItem('token', response.accessToken);
+        console.log(response);
+        
       })
     );
   }
@@ -66,6 +74,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
@@ -77,6 +86,11 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      const parsedUser: AuthResponse = JSON.parse(savedUser);
+      return parsedUser.user;
+    }
+    return null;
   }
 }
