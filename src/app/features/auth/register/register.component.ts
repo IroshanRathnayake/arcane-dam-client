@@ -3,25 +3,33 @@ import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/user.model';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Alert, AlertService } from '../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   registerForm: FormGroup;
   isLoading = false;
   isLoggedIn = false;
   error = '';
   currentStep: number = 1;
   private user: User = {} as User;
+  private alerts: Alert[] = [];
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router,
+    private alertService: AlertService
+  
+  ) {
     this.registerForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -37,6 +45,11 @@ export class RegisterComponent {
       }
     );
   }
+  ngOnInit(): void {
+    this.alertService.alert$.subscribe((alerts) => {
+      this.alerts = alerts;
+    });
+  }
 
    // Custom validator to check if passwords match
    passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
@@ -47,7 +60,7 @@ export class RegisterComponent {
       : null;
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.isLoading = true;
     this.error = '';
     
@@ -72,21 +85,13 @@ export class RegisterComponent {
       console.log(this.user);
       
 
-      this.authService.register(this.user).subscribe({
+      (await this.authService.register(this.user)).subscribe({
         next: () => {
           this.isLoading = false;
           console.log('Registerd successful');
           this.isLoggedIn = true;
-          this.router.navigate(['login']);
-          setTimeout(() => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Registration Successful",
-              showConfirmButton: false,
-              timer: 2000
-            });
-          }, 200);
+          this.alertService.showAlert('success', 'Registration successful');
+          this.router.navigate(['auth/login']);
         },
         error: (error) => {
           this.isLoading = false;

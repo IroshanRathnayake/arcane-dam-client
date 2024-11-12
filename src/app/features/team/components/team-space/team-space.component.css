@@ -1,0 +1,4 @@
+.rotate-animation {
+    transition: transform 0.7s ease; 
+    transform: rotate(360deg); 
+  }

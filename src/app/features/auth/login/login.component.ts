@@ -1,18 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
+import { AlertsComponent } from '../../../shared/components/alerts/alerts.component';
+import { Alert, AlertService } from '../../../shared/services/alert.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, AlertsComponent],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  alerts: Alert[] = [];
   loginForm: FormGroup;
   isLoading = false;
   error = '';
@@ -21,15 +30,27 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(4)]]
+      password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
-  onSubmit(): void {
+  ngOnInit(): void {
+    this.alertService.alert$.subscribe((alerts) => {
+      this.alerts = alerts;
+    });
+
+    if (this.authService.isAuthenticated()) {
+      this.isLoggedIn = true;
+      this.router.navigate(['dashboard']);
+    }
+  }
+
+  async onSubmit(): Promise<void> {
     if (this.loginForm.invalid) return;
 
     this.isLoading = true;
@@ -37,41 +58,29 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    this.authService.login(email, password).subscribe({
+    (await this.authService.login(email, password)).subscribe({
       next: () => {
-        this.isLoading = false; ``
-        console.log('Login successful');
+        this.isLoading = false;
         this.isLoggedIn = true;
         this.router.navigate(['dashboard']);
-        setTimeout(() => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Login Successful",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }, 3500);
       },
-      error: (error) => {
+      error: (err) => {
+        console.log(err);
+        
         this.isLoading = false;
-        this.error = error.error.message || 'An error occurred during login';
-
-        const swalWithBootstrapButtons = Swal.mixin({
-          customClass: {
-            confirmButton: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-5 rounded",
-          },
-          buttonsStyling: false
-        });
-
-        swalWithBootstrapButtons.fire({
-          title: "Login Failed",
-          text: this.error,
-          icon: "error",
-        });
+        if (err.status === 401) {
+          this.error = 'Unauthorized: Invalid email or password.';
+        } else {
+          this.error = err?.error?.message || 'An error occurred during login';
+        }
+        this.alertService.showAlert('error', this.error);
+      },
+      complete: () => {
+        console.log('Login process complete.');
       }
     });
   }
+
 
   googleLogin(): void {
     this.authService.googleAuth();
@@ -79,5 +88,13 @@ export class LoginComponent {
 
   githubLogin(): void {
     this.authService.githubAuth();
+  }
+
+  showSuccess() {
+    this.alertService.showAlert('success', 'Login successful!');
+  }
+
+  showError() {
+    this.alertService.showAlert('error', 'Something went wrong!');
   }
 }

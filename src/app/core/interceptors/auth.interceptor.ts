@@ -1,35 +1,32 @@
-// auth.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
+import Cookies from 'js-cookie';
 
 export const AuthInterceptor: HttpInterceptorFn = (request, next) => {
-  const token = localStorage.getItem('token');
+  const token = Cookies.get('token');
+  const ALLOWED_PUBLIC_ENDPOINTS = ['/auth/login', '/auth/register'];
+  const isPublicEndpoint = ALLOWED_PUBLIC_ENDPOINTS.some(endpoint => request.url.includes(endpoint));
 
-  const PUBLIC_URLS = ['/login', '/register'];
-
-  const isPublicUrl = PUBLIC_URLS.some(url => request.url.includes(url));
-  
-  if (isPublicUrl) {
+  if (isPublicEndpoint) {
     return next(request);
   }
-  
-  if (token) {
-    const clonedRequest = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    
-    return next(clonedRequest).pipe(
-      catchError(error => {
-        if (error.status === 401) {
-          console.log('Unauthorized - redirecting to login');
-          localStorage.removeItem('token');
-        }
-        return throwError(() => error);
+
+  const authRequest = token
+    ? request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-    );
-  }
-  
-  return next(request);
+    : request;
+
+  // Handle the response
+  return next(authRequest).pipe(
+    catchError(error => {
+      if (error.status === 401) {
+        console.warn('Unauthorized access - token may have expired. Redirecting to login...');
+        window.location.href = '/auth/login';
+      }
+      return throwError(() => error);
+    })
+  );
 };

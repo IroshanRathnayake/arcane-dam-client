@@ -1,0 +1,134 @@
+<div class="h-100 bg-gray-50">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-lg font-semibold text-gray-800">Projects</h1>
+    <button
+      class="bg-blue-500 text-sm hover:bg-customBlue-600 text-white hover:text-white px-4 py-1 rounded-md transition-colors"
+    >
+      Add Project +
+    </button>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="flex gap-6 overflow-x-auto pb-4">
+    <div
+      *ngFor="let column of columns"
+      class="flex-shrink-0 w-80 bg-gray-100 rounded-xl p-4"
+      cdkDropList
+      [cdkDropListData]="column.tasks"
+      (cdkDropListDropped)="drop($event)"
+      [id]="column.id"
+      [cdkDropListConnectedTo]="getConnectedList()"
+    >
+      <!-- Column Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span [class]="getStatusIcon(column.id)"></span>
+          <h2 class="font-medium text-sm text-gray-700">{{ column.title }}</h2>
+          <span
+            class="bg-gray-200 px-2 py-0.5 rounded-full text-sm text-gray-600"
+          >
+            {{ column.count }}
+          </span>
+        </div>
+        <img
+          class="w-5 h-5 rotate-90 opacity-50 hover:opacity-90 cursor-pointer"
+          src="assets/icons/dashboard/menu.png"
+          alt=""
+        />
+      </div>
+
+      <!-- Task List -->
+      <div class="space-y-4">
+        <div
+          *ngFor="let task of column.tasks"
+          class="bg-white p-4 rounded-lg shadow-sm cursor-move hover:shadow-md transition-shadow"
+          cdkDrag
+          [cdkDragData]="task"
+        >
+          <!-- Task Header -->
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-medium text-gray-800">{{ task.title }}</h3>
+            <span [class]="getPriorityClass(task.priority)">
+              {{ task.priority }}
+            </span>
+          </div>
+
+          <!-- Task Description -->
+          <p class="text-gray-600 text-sm mb-4">{{ task.description }}</p>
+
+          <!-- Due Date -->
+          <div class="flex items-center text-sm text-gray-500 mb-4">
+            <span class="mr-2">🗓️</span>
+            Due {{ task.dueDate | date : "MMM d" }}
+          </div>
+
+          <!-- Task Footer -->
+          <div class="flex justify-between items-center">
+            <!-- Assignees -->
+            <div class="flex -space-x-2">
+              <div
+                *ngFor="let _ of task.assignees"
+                class="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"
+              ></div>
+              <div
+                *ngIf="task.assignees.length > 0"
+                class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-sm text-gray-600"
+              >
+                +{{ task.assignees.length }}
+              </div>
+            </div>
+
+            <!-- Attachments & Comments -->
+            <div class="flex items-center gap-3 text-gray-500 text-sm">
+              <span *ngIf="task.attachments" class="flex items-center gap-1">
+                <span class="text-gray-400">
+                  <img src="" alt="" /><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13"
+                    />
+                  </svg>
+                </span>
+                {{ task.attachments }}
+              </span>
+              <span *ngIf="task.comments" class="flex items-center gap-1">
+                <span class="text-gray-400">💬</span>
+                {{ task.comments }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div *ngIf="task.progress !== undefined" class="mt-4">
+            <div class="flex justify-between text-sm text-gray-600 mb-1">
+              <span>Progress</span>
+              <span>{{ task.progress }}%</span>
+            </div>
+            <div class="bg-gray-200 h-2 rounded-full overflow-hidden">
+              <div
+                class="bg-emerald-500 h-full rounded-full transition-all duration-300"
+                [style.width.%]="task.progress"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Task Button -->
+        <button
+          class="w-full p-3 border-2 border-dashed text-sm font-medium border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200"
+        >
+          + Add Task
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

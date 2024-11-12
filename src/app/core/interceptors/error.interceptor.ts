@@ -6,7 +6,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         localStorage.clear();
-        window.location.href = '/login';
+        window.location.href = '/auth/login';
       }
       return throwError(() => error);
     })

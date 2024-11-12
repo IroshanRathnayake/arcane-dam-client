@@ -1,3 +1,7 @@
+<div class="alerts-container">
+  <app-alerts *ngFor="let alert of alerts" [alert]="alert"></app-alerts>
+</div>
+
 <div class="bg-cover bg-center h-screen w-screen" style="background-image: url('assets/back-vector.png');">
   <div
     class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
@@ -62,6 +66,12 @@
             class="mt-1 text-sm text-red-500"
           >
             Password is required
+          </div>
+          <div
+            *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']"
+            class="mt-1 text-sm text-red-500"
+          >
+            Password must be at least 4 characters long
           </div>
         </div>
 
@@ -171,8 +181,7 @@
         <p class="text-sm text-gray-600">
           Don't have an account?
           <a
-            href="register"
-            routerLink="register"
+            [routerLink]="['/auth/register']"
             class="font-medium text-blue-600 hover:text-blue-500"
             >Sign up</a
           >

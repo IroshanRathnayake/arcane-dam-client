@@ -3,15 +3,20 @@
   <div class="p-4">
     <div class="flex items-center space-x-2 mb-6">
       <div
-        class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center"
+        class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center cursor-pointer"
+        data-popover-target="popover-user-profile"
+        type="button"
       >
-        <span class="text-customBlue-500">{{currentUserName.charAt(0)}}</span>
+        <span class="text-customBlue-500">{{ currentUserName.charAt(0) }}</span>
       </div>
-      <span class="font-medium mr-3 w-28 overflow-hidden text-ellipsis whitespace-nowrap" title="{{ currentUserName }}">
+      <span
+        class="font-medium mr-3 w-28 overflow-hidden text-ellipsis whitespace-nowrap"
+        title="{{ currentUserName }}"
+      >
         {{ currentUserName }}
-    </span>
+      </span>
       <svg
-        [ngClass]="{ 'rotate-180': dropdowns['information'] }"
+        [ngClass]="{ 'rotate-180': isProfileOpen }"
         xmlns="http://www.w3.org/2000/svg"
         class="w-3 h-3 fill-gray-600 group-hover:fill-black cursor-pointer"
         viewBox="0 0 451.847 451.847"
@@ -23,30 +28,118 @@
         />
       </svg>
 
+      <!-- Profile Modal -->
+      <div
+        data-popover
+        id="popover-user-profile"
+        role="tooltip"
+        class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600"
+      >
+        <div class="p-3">
+          <div class="flex items-center justify-between mb-2">
+            <a href="#">
+              <img
+                class="w-10 h-10 rounded-full"
+                src="assets/icons/man.png"
+                alt={{currentUserName}}
+              />
+            </a>
+            <div>
+              <button
+                type="button"
+                class="text-white bg-customBlue-400 hover:bg-blue-800 focus:ring-4 focus:ring-customBlue-200 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-customBlue-600 dark:hover:bg-customBlue-500 focus:outline-none dark:focus:ring-customBlue-800"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+          <p
+            class="text-base font-semibold leading-none text-gray-900 dark:text-white"
+          >
+            <a href="#">{{currentUserName}}</a>
+          </p>
+          <p class="mb-3 text-sm font-normal">
+            <a href="#" class="hover:underline">{{userName}}</a>
+          </p>
+          <p class="mb-4 text-sm">
+            The ultimate project management tool for seamless planning and tracking across all teams.
+            <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline"
+              >Arcane.com</a
+            >.
+          </p>
+          <ul class="flex text-sm">
+            <li class="me-2">
+              <a href="#" class="hover:underline">
+                <span class="font-semibold text-gray-900 dark:text-white mr-1"
+                  >43</span
+                >
+                <span>Assets</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline">
+                <span class="font-semibold text-gray-900 dark:text-white mr-1"
+                  >3</span
+                >
+                <span>Projects</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div data-popper-arrow></div>
+      </div>
+
       <div class="relative" *ngIf="isProfileOpen">
-       <ul id="dropdownMenu" class='absolute block shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto'>
-          <li class='py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 mr-3" viewBox="0 0 512 512">
+        <ul
+          id="dropdownMenu"
+          class="absolute block shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto"
+        >
+          <li
+            class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="w-4 h-4 mr-3"
+              viewBox="0 0 512 512"
+            >
               <path
                 d="M337.711 241.3a16 16 0 0 0-11.461 3.988c-18.739 16.561-43.688 25.682-70.25 25.682s-51.511-9.121-70.25-25.683a16.007 16.007 0 0 0-11.461-3.988c-78.926 4.274-140.752 63.672-140.752 135.224v107.152C33.537 499.293 46.9 512 63.332 512h385.336c16.429 0 29.8-12.707 29.8-28.325V376.523c-.005-71.552-61.831-130.95-140.757-135.223zM446.463 480H65.537V376.523c0-52.739 45.359-96.888 104.351-102.8C193.75 292.63 224.055 302.97 256 302.97s62.25-10.34 86.112-29.245c58.992 5.91 104.351 50.059 104.351 102.8zM256 234.375a117.188 117.188 0 1 0-117.188-117.187A117.32 117.32 0 0 0 256 234.375zM256 32a85.188 85.188 0 1 1-85.188 85.188A85.284 85.284 0 0 1 256 32z"
-                data-original="#000000"></path>
+                data-original="#000000"
+              ></path>
             </svg>
             View profile
           </li>
-          <li class='py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 mr-3" viewBox="0 0 512 512">
+          <li
+            class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="w-4 h-4 mr-3"
+              viewBox="0 0 512 512"
+            >
               <path
                 d="M197.332 170.668h-160C16.746 170.668 0 153.922 0 133.332v-96C0 16.746 16.746 0 37.332 0h160c20.59 0 37.336 16.746 37.336 37.332v96c0 20.59-16.746 37.336-37.336 37.336zM37.332 32A5.336 5.336 0 0 0 32 37.332v96a5.337 5.337 0 0 0 5.332 5.336h160a5.338 5.338 0 0 0 5.336-5.336v-96A5.337 5.337 0 0 0 197.332 32zm160 480h-160C16.746 512 0 495.254 0 474.668v-224c0-20.59 16.746-37.336 37.332-37.336h160c20.59 0 37.336 16.746 37.336 37.336v224c0 20.586-16.746 37.332-37.336 37.332zm-160-266.668A5.337 5.337 0 0 0 32 250.668v224A5.336 5.336 0 0 0 37.332 480h160a5.337 5.337 0 0 0 5.336-5.332v-224a5.338 5.338 0 0 0-5.336-5.336zM474.668 512h-160c-20.59 0-37.336-16.746-37.336-37.332v-96c0-20.59 16.746-37.336 37.336-37.336h160c20.586 0 37.332 16.746 37.332 37.336v96C512 495.254 495.254 512 474.668 512zm-160-138.668a5.338 5.338 0 0 0-5.336 5.336v96a5.337 5.337 0 0 0 5.336 5.332h160a5.336 5.336 0 0 0 5.332-5.332v-96a5.337 5.337 0 0 0-5.332-5.336zm160-74.664h-160c-20.59 0-37.336-16.746-37.336-37.336v-224C277.332 16.746 294.078 0 314.668 0h160C495.254 0 512 16.746 512 37.332v224c0 20.59-16.746 37.336-37.332 37.336zM314.668 32a5.337 5.337 0 0 0-5.336 5.332v224a5.338 5.338 0 0 0 5.336 5.336h160a5.337 5.337 0 0 0 5.332-5.336v-224A5.336 5.336 0 0 0 474.668 32zm0 0"
-                data-original="#000000"></path>
+                data-original="#000000"
+              ></path>
             </svg>
             Dashboard
           </li>
-          <li class='py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer' (click)="logout()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 mr-3"
-              viewBox="0 0 6.35 6.35">
+          <li
+            class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+            (click)="logout()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="w-4 h-4 mr-3"
+              viewBox="0 0 6.35 6.35"
+            >
               <path
                 d="M3.172.53a.265.266 0 0 0-.262.268v2.127a.265.266 0 0 0 .53 0V.798A.265.266 0 0 0 3.172.53zm1.544.532a.265.266 0 0 0-.026 0 .265.266 0 0 0-.147.47c.459.391.749.973.749 1.626 0 1.18-.944 2.131-2.116 2.131A2.12 2.12 0 0 1 1.06 3.16c0-.65.286-1.228.74-1.62a.265.266 0 1 0-.344-.404A2.667 2.667 0 0 0 .53 3.158a2.66 2.66 0 0 0 2.647 2.663 2.657 2.657 0 0 0 2.645-2.663c0-.812-.363-1.542-.936-2.03a.265.266 0 0 0-.17-.066z"
-                data-original="#000000"></path>
+                data-original="#000000"
+              ></path>
             </svg>
             Logout
           </li>
@@ -55,10 +148,10 @@
     </div>
 
     <!-- Navigation Items -->
-    <nav class="space-y-1">
+    <nav class="space-y-2">
       <!-- Home -->
       <a
-        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
       >
         <svg
           class="w-5 h-5"
@@ -73,12 +166,12 @@
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
           ></path>
         </svg>
-        <span>Home</span>
+        <span class="text-sm">Home</span>
       </a>
 
       <!-- Inbox -->
       <a
-        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
       >
         <svg
           class="w-5 h-5"
@@ -93,68 +186,48 @@
             d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
           ></path>
         </svg>
-        <span>Inbox</span>
+        <span class="text-sm">Inbox</span>
       </a>
 
       <!-- Assets -->
       <a
-        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
       >
         <img
           class="w-5 h-5 opacity-80"
           src="https://img.icons8.com/material-outlined/50/mortgage.png"
           alt="mortgage"
         />
-        <span>Assets</span>
+        <span class="text-sm">Assets</span>
+      </a>
+      <!-- Dashboard -->
+      <a
+        class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
+        (click)="test()"
+      >
+        <img
+          src="assets/icons/dashboard/dashboard-icon.png"
+          alt="dashboard"
+          class="w-5 h-5 opacity-80"
+        />
+        <span class="text-sm">Dashboard</span>
       </a>
     </nav>
 
-    <!-- Spaces Section -->
-    <div class="mt-8">
-      <div class="text-xs font-medium text-gray-500 mb-2">SPACES</div>
-      <div class="space-y-1">
-        <a
-          class="flex items-center justify-between px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-        >
-          <div class="flex items-center space-x-2">
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              ></path>
-            </svg>
-            <span>Team Space</span>
-          </div>
-          <button class="text-gray-400 hover:text-gray-600 flex">
-            <img
-              class="w-4 h-4 opacity-60 mx-2 hover:opacity-90"
-              src="https://img.icons8.com/fluency-systems-filled/50/ellipsis.png"
-              alt="ellipsis"
-            />
-            <img
-              class="w-4 h-4 opacity-60 hover:opacity-90"
-              src="https://img.icons8.com/material-sharp/24/plus-math--v1.png"
-              alt="plus-math--v1"
-            />
-          </button>
-        </a>
-      </div>
-    </div>
+    <!-- Team Space -->
+    <app-team-space></app-team-space>
 
     <!-- Section -->
     <div
       class="flex cursor-pointer group mt-5 opacity-80 ml-1"
       (click)="toggleDropdown('information')"
     >
-      <img class="w-5 h-5 opacity-80 mr-3" src="https://img.icons8.com/ios-glyphs/30/information.png" alt="information"/>
-      <span class="pr-16">Information</span>
+      <img
+        class="w-5 h-5 opacity-80 mr-3"
+        src="https://img.icons8.com/ios-glyphs/30/information.png"
+        alt="information"
+      />
+      <span class="pr-16 text-sm">Information</span>
       <svg
         [ngClass]="{ 'rotate-180': dropdowns['information'] }"
         xmlns="http://www.w3.org/2000/svg"
@@ -265,6 +338,10 @@
           </a>
         </li>
       </ul>
+    </div>
+
+    <div>
+      <app-project-structure></app-project-structure>
     </div>
   </div>
 </div>
