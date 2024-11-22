@@ -4,7 +4,6 @@
     <span class="text-xs font-medium text-gray-500 mb-2">SPACES</span>
     <button
       class="text-gray-400 hover:text-gray-600 flex items-start space-x-2 mr-2"
-      (click)="toggleSpace()"
     >
       <img
         class="w-4 h-4 opacity-60 hover:opacity-90"
@@ -24,199 +23,303 @@
       />
     </button>
     <div
-    id="tooltip-right"
-    role="tooltip"
-    class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-gray-600 bg-gray-200 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
-  >
-    Add a new space
-    <div class="tooltip-arrow" data-popper-arrow></div>
-  </div>
+      id="tooltip-right"
+      role="tooltip"
+      class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-gray-600 bg-gray-200 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+    >
+      Add a new space
+      <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
   </div>
 
-
+  <!-- Add New Space Modal -->
   <app-add-space-model
     [isModalOpen]="isModalOpen"
     (closeModalEvent)="closeModal()"
   ></app-add-space-model>
 
+  <!-- Add New Project Modal -->
+  <app-add-project-modal
+    [isModalOpen]="isAddNewProjectModalOpen"
+    (closeModalEvent)="closeAddNewProjectModal()"
+  ></app-add-project-modal>
+
+   <!-- Team Permission Modal -->
+   <app-team-permission
+   [isModalOpen]="isPermissionModalOpen"
+   (closeModalEvent)="closePermissionModal()"
+ ></app-team-permission>
+
   <div class="space-y-1 mt-2">
-    <a
-      *ngFor="let space of spaces; let i = index"
-      class="flex items-center justify-between px-2 py-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
+    <a *ngFor="let space of spaces; let i = index" class="cursor-pointer">
+      <div
+      class="flex items-center justify-between px-2 py-2 text-gray-700 rounded-lg hover:bg-customBlue-50 group"
+      (click)="toggleSpace(i)"
+      [ngClass]="{
+        'font-medium text-customBlue-500 bg-blue-50': selectedSpaceIndex === i,
+        'text-gray-700': selectedSpaceIndex !== i
+      }"
     >
-      <div class="flex items-center space-x-2">
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <div class="flex items-center space-x-2">
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            ></path>
+          </svg>
+          <ng-container *ngIf="editingIndex === i; else viewMode">
+            <input
+              type="text"
+              [(ngModel)]="updatedSpaceName"
+              (keyup.enter)="saveEdit(space)"
+              (blur)="saveEdit(space)"
+              class="w-44 rounded-lg border text-sm mt-1 mb-1 border-gray-300 px-2 py-2 bg-gray-100 text-gray-700 focus:outline-none focus:border-transparent"
+            />
+          </ng-container>
+          <ng-template #viewMode>
+            <span class="text-sm"> {{ space.name }} </span>
+          </ng-template>
+        </div>
+        <button
+          class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          (click)="toggleSpace(i)"
+          *ngIf="editingIndex !== i"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-          ></path>
-        </svg>
-        <ng-container *ngIf="editingIndex === i; else viewMode">
-          <input
-            type="text"
-            [(ngModel)]="updatedSpaceName"
-            (keyup.enter)="saveEdit(space)"
-            (blur)="saveEdit(space)"
-            class="w-44 rounded-lg border text-sm mt-1 mb-1 border-gray-300 px-2 py-2 bg-gray-100 text-gray-700 focus:outline-none focus:border-transparent"
+          <img
+            class="w-4 h-4 opacity-60 mx-2 hover:opacity-90"
+            src="https://img.icons8.com/fluency-systems-filled/50/ellipsis.png"
+            alt="ellipsis"
+            (click)="toggleSubmenu(i)"
           />
-        </ng-container>
-        <ng-template #viewMode>
-          <span class="text-sm"> {{ space.name }} </span>
-        </ng-template>
+        </button>
+
+        <div
+          *ngIf="isSubmenuOpen && selectedSpaceIndex === i"
+          class="absolute bg-white shadow-md rounded-md p-1 mt-28 z-50 ml-48 w-[58%]"
+        >
+          <ul class="space-y-2">
+            <li
+              class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+              (click)="openPermissionModal()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+                />
+              </svg>
+              Permission
+            </li>
+            <li
+              class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+              (click)="handleInfo(space)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
+                />
+              </svg>
+
+              New Project
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-2 h-2 fill-gray-600 opacity-70 ml-3 mt-1 -rotate-90"
+                viewBox="0 0 451.847 451.847"
+                (mouseenter)="toggleNewTeamSubMenu(i)"
+              >
+                <path
+                  d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
+                  data-original="#000000"
+                />
+              </svg>
+              <div
+                class="absolute bg-white shadow-md rounded-md p-2 z-30 ml-32"
+                *ngIf="
+                  isSubmenuOpen &&
+                  selectedSpaceIndex === i &&
+                  isNewTeamSubmenuOpen
+                "
+              >
+                <ul class="space-y-1" (mouseleave)="toggleNewTeamSubMenu(i)">
+                  <li
+                    (click)="openAddNewProjectModal()"
+                    data-tooltip-target="tooltip-right"
+                    data-tooltip-placement="right"
+                    type="button"
+                    class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+                  >
+                    Organization
+                  </li>
+                  <li
+                    class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+                  >
+                    Personal
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li
+              class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+              (click)="enterEditMode(space, i)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+
+              Update Name
+            </li>
+            <li
+              class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
+              (click)="handleInfo(space)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                />
+              </svg>
+
+              Space Info
+            </li>
+            <li
+              *ngIf="isOwner"
+              class="cursor-pointer flex hover:bg-gray-200 text-xs px-2 py-1 rounded text-red-600"
+              (click)="handleDelete(space)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2 text-red-600"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
+
+              Delete Item
+            </li>
+          </ul>
+        </div>
       </div>
-      <button
-        class="text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        (click)="toggleSpace()"
-        *ngIf="editingIndex !== i"
+
+      <!-- Projects -->
+      <div
+        *ngIf="isSpaceVisible && selectedSpaceIndex === i"
+        class="flex justify-between gap-2.5 mt-1 ml-9 mb-2 leading-loose whitespace-nowrap cursor-pointer text-gray-600 max-md:ml-2.5 group"
       >
+        <div class="flex items-center gap-2" (click)="handleProject(i)">
+          <svg
+            *ngIf="!isFolderOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+            />
+          </svg>
+
+          <svg
+            *ngIf="isFolderOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"
+            />
+          </svg>
+
+          <div class="text-sm">Projects</div>
+        </div>
         <img
-          class="w-4 h-4 opacity-60 mx-2 hover:opacity-90"
+          class="w-3 h-3 mx-2 mt-1 opacity-0 group-hover:opacity-70"
           src="https://img.icons8.com/fluency-systems-filled/50/ellipsis.png"
           alt="ellipsis"
           (click)="toggleSubmenu(i)"
         />
-      </button>
-      
+      </div>
 
+      <!-- Teams -->
       <div
-        *ngIf="isSubmenuOpen && selectedSpaceIndex === i"
-        class="absolute bg-white shadow-md rounded-md p-2 mt-28 z-10 ml-48"
+        *ngIf="isSpaceVisible && selectedSpaceIndex === i && isProjectOpen"
+        class="flex gap-2.5 mt-3 ml-20 mb-2 leading-loose whitespace-nowrap cursor-pointer text-gray-600 max-md:ml-2.5"
       >
-        <ul class="space-y-2">
-          <li
-            class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
-            (click)="handleInfo(space)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-4 h-4 mr-2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
-              />
-            </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-4 h-4"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+          />
+        </svg>
 
-            New Team
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-2 h-2 fill-gray-600 opacity-70 ml-3 mt-1 -rotate-90"
-              viewBox="0 0 451.847 451.847"
-              (mouseenter)="toggleNewTeamSubMenu(i)"
-            >
-              <path
-                d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
-                data-original="#000000"
-              />
-            </svg>
-            <div
-              class="absolute bg-white shadow-md rounded-md p-2 z-30 ml-28"
-              *ngIf="
-                isSubmenuOpen &&
-                selectedSpaceIndex === i &&
-                isNewTeamSubmenuOpen
-              "
-            >
-              <ul class="space-y-1" (mouseleave)="toggleNewTeamSubMenu(i)">
-                <li
-                  class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
-                >
-                  Organization
-                </li>
-                <li
-                  class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
-                >
-                  Personal
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li
-            class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
-            (click)="enterEditMode(space, i)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-4 h-4 mr-2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-              />
-            </svg>
-
-            Update Name
-          </li>
-          <li
-            class="cursor-pointer flex text-gray-600 text-xs hover:bg-gray-200 px-2 py-1 rounded"
-            (click)="handleInfo(space)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-4 h-4 mr-2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-              />
-            </svg>
-
-            Space Info
-          </li>
-          <li
-            class="cursor-pointer flex hover:bg-gray-200 text-xs px-2 py-1 rounded text-red-600"
-            (click)="handleDelete(space)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-4 h-4 mr-2 text-red-600"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-              />
-            </svg>
-
-            Delete Item
-          </li>
-        </ul>
+        <div class="text-xs">Teams</div>
       </div>
- 
     </a>
-    <!-- <div class="flex gap-2.5 mt-2 ml-5 text-xs leading-loose whitespace-nowrap text-zinc-600 max-md:ml-2.5">
-      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9d0f8ad4255e3ee8bd4b627b5c0d96073eca535b3c93c340b6373551aee5b4e4?placeholderIfAbsent=true&apiKey=6f7a1698a3674de3a21dfe43a82590bf" alt="" class="object-contain shrink-0 self-start rounded-md aspect-square w-[17px]" />
-      <div class="rotate-[2.4492937051703357e-16rad]">
-        Projects
-      </div>
-    </div> -->
   </div>
-
 </div>
-

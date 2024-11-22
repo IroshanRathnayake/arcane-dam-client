@@ -44,4 +44,11 @@ export class SpaceService {
   triggerInitComponentA() {
     this.spaceComponentASubject.next();
   }
+
+
+
+
+  deleteSpace(spaceId: string): Observable<void> {
+    return this.http.delete<void>(`/api/spaces/${spaceId}`);
+  }
 }

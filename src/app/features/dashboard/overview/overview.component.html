@@ -1,51 +1,93 @@
 <main>
-   
-    <div class="mt-4 mr-5 ml-3 max-md:mr-2.5 max-md:max-w-full">
-      <div class="flex gap-5 max-md:flex-col">
-        <section class="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
-          <div class="flex justify-between items-start pt-3.5 pr-4 pb-48 pl-4 mx-auto w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mt-3">
-            <h2 class="rotate-[2.4492937051703357e-16rad] text-zinc-700">
-              Task Today
-            </h2>
-            <h2 class="text-customBlue-500 cursor-pointer text-xs mt-1">See All</h2>
+  <div class="mt-4 mr-4 ml-4 max-md:mr-2.5 max-md:max-w-full ">
+    <div class="flex gap-1 max-md:flex-col">
+      <section class="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
+        <div
+          class="flex justify-between items-start pt-3.5 pr-4 pb-48 pl-4 mx-auto w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mt-3"
+        >
+          <h2 class="text-sm font-semibold text-gray-700">
+            Team Assets
+          </h2>
+          <h2 class="text-customBlue-500 cursor-pointer text-xs mt-1">
+            + Add New 
+          </h2>
+        </div>
+      </section>
+      <section class="flex flex-col ml-5 w-[50%] max-md:ml-0 max-md:w-full">
+        <div
+          class="flex flex-col grow pt-3.5 pr-14 pl-4 w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:mt-3"
+        >
+          <h2
+            class="text-sm font-semibold text-gray-700"
+          >
+            Assets Meta Data
+          </h2>
+
+          <div class="flex items-center justify-center w-full mt-6">
+            <label
+              for="dropzone-file"
+              class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
+            >
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg
+                  class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span class="font-semibold">Click to upload</span> or drag and
+                  drop
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                </p>
+              </div>
+              <input id="dropzone-file" type="file" class="hidden" />
+            </label>
           </div>
-        </section>
-        <!-- <section class="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-          <div class="flex flex-col grow pt-3.5 pr-20 pb-20 pl-4 w-full bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:mt-3">
-            <h2 class="self-start text-xs leading-relaxed rotate-[2.4492937051703357e-16rad] text-zinc-700">
-              Docs
-            </h2>
-            <p class="text-center mt-28 ml-14 text-xs leading-loose text-gray-500 rotate-[2.4492937051703357e-16rad] max-md:mt-10">
-              You haven't added any Docs to this location.
-            </p>
-          </div>
-        </section> -->
-        <section class="flex flex-col ml-5 w-[50%] max-md:ml-0 max-md:w-full">
-          <div class="flex flex-col grow pt-3.5 pr-14 pb-16 pl-4 w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:mt-3">
-            <h2 class="self-start rotate-[2.4492937051703357e-16rad] text-zinc-700">
-              Assets
-            </h2>
-            <!-- <p class="mt-20 text-xs leading-4 text-center text-gray-500 rotate-[2.4492937051703357e-16rad] max-md:mt-10">
-             Insert Assets to save
-            </p> -->
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
-    <section class="flex flex-col items-start pt-3.5 pr-20 pb-48 pl-4 mt-3 mr-5 ml-3 text-sm leading-relaxed whitespace-nowrap bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mr-2.5 max-md:max-w-full">
-      <h2 class="rotate-[2.4492937051703357e-16rad] text-zinc-700">
-        Folders
+  </div>
+  <section
+    class="flex flex-col items-start pt-3.5 pr-20 pb-48 pl-4 mt-3 mr-5 ml-3 text-sm leading-relaxed whitespace-nowrap bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mr-2.5 max-md:max-w-full"
+  >
+    <h2 class="text-gray-700 font-semibold">Folders</h2>
+    <div
+      class="flex gap-1 px-3 py-3.5 mt-3 mb-0 bg-white rounded-md border border-gray-200 border-solid text-zinc-700 max-md:mb-2.5 cursor-pointer"
+    >
+      <img
+        loading="lazy"
+        src="assets/icons/common/project.png"
+        alt=""
+        class="object-contain shrink-0 w-4 rounded-md aspect-square"
+      />
+      <div class="basis-auto">Projects</div>
+    </div>
+  </section>
+  <section
+    class="gap-5 items-center py-2.5 pl-3.5 mt-3.5 mr-5 ml-3.5 max-w-full bg-white rounded border border-white border-solid shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:mr-2.5"
+  >
+    <div
+      class="flex flex-col pb-32 self-start text-sm leading-relaxed whitespace-nowrap text-zinc-700 max-md:max-w-full"
+    >
+      <h2 class="text-gray-700 font-semibold">
+        Leads & Project Activity
       </h2>
-      <div class="flex gap-1 px-3 py-3.5 mt-3 mb-0 bg-white rounded-md border border-gray-200 border-solid text-zinc-700 max-md:mb-2.5 cursor-pointer">
-        <img loading="lazy" src="assets/icons/common/project.png" alt="" class="object-contain shrink-0 w-4 rounded-md aspect-square" />
-        <div class="basis-auto">Projects</div>
-      </div>
-    </section>
-    <section class="flex gap-5 justify-between items-start py-2.5 pl-3.5 mt-3.5 mr-5 ml-3.5 max-w-full bg-white rounded border border-white border-solid shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:mr-2.5">
-      <div class="flex flex-col pb-32 self-start text-sm leading-relaxed whitespace-nowrap text-zinc-700 max-md:max-w-full">
-        <h2 class="self-start rotate-[2.4492937051703357e-16rad]">
-          Leads & Project Activity
-        </h2>
-      </div>
-    </section>
-  </main>
+    </div>
+    <!-- Team Activity -->
+    
+
+
+  </section>
+</main>

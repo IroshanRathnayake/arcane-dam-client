@@ -91,7 +91,7 @@ export class RegisterComponent implements OnInit{
           console.log('Registerd successful');
           this.isLoggedIn = true;
           this.alertService.showAlert('success', 'Registration successful');
-          this.router.navigate(['auth/login']);
+          this.router.navigate(['auth/verify']);
         },
         error: (error) => {
           this.isLoading = false;

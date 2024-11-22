@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { TeamSpaceComponent } from "../../../features/team/components/team-space/team-space.component";
 import { ProjectStructureComponent } from "../../../features/projects/components/project-structure/project-structure.component";
@@ -9,7 +9,7 @@ import { ProjectStructureComponent } from "../../../features/projects/components
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, TeamSpaceComponent, ProjectStructureComponent],
+  imports: [CommonModule, RouterOutlet, FormsModule, TeamSpaceComponent, ProjectStructureComponent, RouterLink],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })

@@ -8,17 +8,20 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Space } from '../../models/space';
 import { SpaceService } from '../../services/space.service';
 import { Alert, AlertService } from '../../../../shared/services/alert.service';
+import { AddProjectModalComponent } from "../../../projects/components/add-project-modal/add-project-modal.component";
+import { TeamPermissionComponent } from "../team-permission/team-permission.component";
 
 @Component({
   selector: 'app-team-space',
   standalone: true,
-  imports: [CommonModule, FormsModule, AddSpaceModelComponent],
+  imports: [CommonModule, FormsModule, AddSpaceModelComponent, AddProjectModalComponent, TeamPermissionComponent],
   templateUrl: './team-space.component.html',
   styleUrl: './team-space.component.css',
 })
 export class TeamSpaceComponent implements OnInit {
-  isSpaceVisible: boolean = true;
+  isSpaceVisible: boolean = false;
   isProfileOpen: boolean = false;
+  isProjectOpen: boolean = false;
   teamSpaces: Team[] = [];
   spaces: Space[] | null = [];
   newSpaceName: string = '';
@@ -36,6 +39,10 @@ export class TeamSpaceComponent implements OnInit {
   editingIndex: number | null = null;
   alerts: Alert[] = [];
   isRotating = false;
+  isFolderOpen : boolean = false;
+  isAddNewProjectModalOpen : boolean = false;
+  isOwner: boolean = true;
+  isPermissionModalOpen : boolean = false;
 
   constructor(
     private teamService: TeamService,
@@ -70,6 +77,21 @@ export class TeamSpaceComponent implements OnInit {
   }
   closeModal(): void {
     this.isModalOpen = false;
+  }
+  openAddNewProjectModal():void{
+    this.isAddNewProjectModalOpen = true;
+    this.isSubmenuOpen = false;
+  }
+  closeAddNewProjectModal():void{
+    this.isAddNewProjectModalOpen = false;
+  }
+
+  openPermissionModal():void{
+    this.isPermissionModalOpen = true;
+    this.isSubmenuOpen = false;
+  }
+  closePermissionModal():void{
+    this.isPermissionModalOpen = false;
   }
 
   toggleInput() {
@@ -161,8 +183,10 @@ export class TeamSpaceComponent implements OnInit {
     // this.teamSpaces = this.teamSpaces.filter(s => s !== space);
   }
 
-  toggleSpace(): void {
+  toggleSpace(index: number): void {
     this.isSpaceVisible = !this.isSpaceVisible;
+    this.selectedSpaceIndex === index ? !this.isSubmenuOpen : true;
+  this.selectedSpaceIndex = index;
   }
 
   toggleActions(): void {
@@ -186,6 +210,13 @@ export class TeamSpaceComponent implements OnInit {
       this.isModalOpen = false;
       this.isNewTeamSubmenuOpen = false
     }
+  }
+
+  handleProject(index: number) {
+    this.isProjectOpen = !this.isProjectOpen;
+    this.selectedSpaceIndex === index ? !this.isSubmenuOpen : true;
+    this.selectedSpaceIndex = index;
+    this.isFolderOpen = !this.isFolderOpen;
   }
 
   

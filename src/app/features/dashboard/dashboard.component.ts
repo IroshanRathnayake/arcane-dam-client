@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
@@ -8,18 +8,22 @@ import { Alert, AlertService } from '../../shared/services/alert.service';
 import { AlertsComponent } from '../../shared/components/alerts/alerts.component';
 import { CookieModalComponent } from "./cookie-modal/cookie-modal.component";
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from "../../shared/components/header/header.component";
+import { NavbarComponent } from "./navbar/navbar.component";
+import { DashboardBaseComponent } from "./dashboard-base/dashboard-base.component";
+import { RightSidebarComponent } from "../../shared/components/right-sidebar/right-sidebar.component";
+import { NotesSidebarComponent } from "../../shared/components/right-sidebar/notes-sidebar/notes-sidebar.component";
+import { BookmarksSidebarComponent } from "../../shared/components/right-sidebar/bookmarks-sidebar/bookmarks-sidebar.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SidebarComponent, ProjectListComponent, AssetDetailsComponent, SpinnerComponent, CommonModule, AlertsComponent, CookieModalComponent, RouterOutlet, RouterLink],
+  imports: [SidebarComponent, ProjectListComponent, AssetDetailsComponent, SpinnerComponent, CommonModule, AlertsComponent, CookieModalComponent, RouterOutlet, RouterLink, HeaderComponent, NavbarComponent, DashboardBaseComponent, RightSidebarComponent, NotesSidebarComponent, BookmarksSidebarComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
   isLoading = true;
-  isBookmarks = false;
-  isNotes = false;
   isCookieModalOpen = false;
   alerts: Alert[] = [];
   selectedTab: string = 'overview';
@@ -44,14 +48,17 @@ export class DashboardComponent implements OnInit {
     }, 2500);
   }
 
-  toggleBookmarks(){
-    this.isNotes = false;
-    this.isBookmarks = !this.isBookmarks
+  isNotesOpen = false;
+  isBookmarksOpen = false;
+
+  onToggleNotes(isOpen: boolean) {
+    this.isNotesOpen = isOpen;
+    this.isBookmarksOpen = false;
   }
 
-  toggleNotes(){
-    this.isBookmarks = false;
-    this.isNotes = !this.isNotes
+  onToggleBookmarks(isOpen: boolean) {
+    this.isBookmarksOpen = isOpen;
+    this.isNotesOpen = false;
   }
 
   selectTab(tab: string) {

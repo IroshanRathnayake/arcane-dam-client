@@ -12,7 +12,6 @@ import { environment } from '../../../environments/environment.development';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-  // private readonly API_URL = `http://localhost:8083/api/auth`;
   private readonly API_URL = `${environment.BASE_URL}/api/auth`;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -71,6 +70,24 @@ export class AuthService {
       .pipe(
         tap((response) => {
           console.log(response);
+        })
+      );
+  }
+  async verifyOtp(username:string, otp: string): Promise<Observable<AuthResponse>> {
+    return this.http
+      .post<AuthResponse>(`${this.API_URL}/verify`, { username,otp }, {
+        responseType: 'json',
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(
+        tap((response) => {
+          Cookies.set('token', response.token, { expires: 1 / 24 });
+          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('spaces', JSON.stringify(response.user.spaces));
+          this.currentUserSubject.next(response.user);
+          sessionStorage.setItem('oneTimeData', 'false');
         })
       );
   }

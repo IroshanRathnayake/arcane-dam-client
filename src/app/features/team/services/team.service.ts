@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Team } from '../models/team';
 import { Observable, tap } from 'rxjs';
 import Cookies from 'js-cookie';
+import { Project } from '../../projects/models/project';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,14 @@ export class TeamService {
         console.log(response);
       })
     );
+  }
+
+
+  getTeamsBySpaceId(spaceId: string): Observable<Team[]> {
+    return this.http.get<Team[]>(`/api/spaces/${spaceId}/teams`);
+  }
+
+  getProjectsByTeamId(teamId: string): Observable<Project[]> {
+    return this.http.get<Project[]>(`/api/teams/${teamId}/projects`);
   }
 }

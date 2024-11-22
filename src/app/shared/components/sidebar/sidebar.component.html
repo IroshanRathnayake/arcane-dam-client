@@ -1,13 +1,16 @@
 <!-- Left Sidebar -->
-<div class="w-60 bg-white border-r h-screen">
+<div class="w-60 bg-white border h-screen fixed">
   <div class="p-4">
     <div class="flex items-center space-x-2 mb-6">
       <div
-        class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center cursor-pointer"
+        class="relative w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center cursor-pointer"
         data-popover-target="popover-user-profile"
         type="button"
       >
         <span class="text-customBlue-500">{{ currentUserName.charAt(0) }}</span>
+        <span
+          class="absolute bottom-0 left-6 transform translate-y-1/4 w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"
+        ></span>
       </div>
       <span
         class="font-medium mr-3 w-28 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -41,7 +44,7 @@
               <img
                 class="w-10 h-10 rounded-full"
                 src="assets/icons/man.png"
-                alt={{currentUserName}}
+                alt="{{ currentUserName }}"
               />
             </a>
             <div>
@@ -56,13 +59,14 @@
           <p
             class="text-base font-semibold leading-none text-gray-900 dark:text-white"
           >
-            <a href="#">{{currentUserName}}</a>
+            <a href="#">{{ currentUserName }}</a>
           </p>
           <p class="mb-3 text-sm font-normal">
-            <a href="#" class="hover:underline">{{userName}}</a>
+            <a href="#" class="hover:underline">{{ userName }}</a>
           </p>
           <p class="mb-4 text-sm">
-            The ultimate project management tool for seamless planning and tracking across all teams.
+            The ultimate project management tool for seamless planning and
+            tracking across all teams.
             <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline"
               >Arcane.com</a
             >.
@@ -152,6 +156,7 @@
       <!-- Home -->
       <a
         class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
+        routerLink="/dashboard"
       >
         <svg
           class="w-5 h-5"
@@ -192,6 +197,7 @@
       <!-- Assets -->
       <a
         class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
+        routerLink="assets"
       >
         <img
           class="w-5 h-5 opacity-80"
@@ -205,12 +211,22 @@
         class="flex items-center space-x-2 px-2 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
         (click)="test()"
       >
-        <img
-          src="assets/icons/dashboard/dashboard-icon.png"
-          alt="dashboard"
-          class="w-5 h-5 opacity-80"
-        />
-        <span class="text-sm">Dashboard</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5 text-gray-950"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
+          />
+        </svg>
+
+        <span class="text-sm">Chat</span>
       </a>
     </nav>
 
@@ -341,7 +357,7 @@
     </div>
 
     <div>
-      <app-project-structure></app-project-structure>
+      <!-- <app-project-structure></app-project-structure> -->
     </div>
   </div>
 </div>

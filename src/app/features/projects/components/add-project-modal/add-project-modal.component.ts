@@ -1,28 +1,18 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
-import { TeamService } from '../../services/team.service';
-import { SpaceService } from '../../services/space.service';
-import { Space } from '../../models/space';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Alert, AlertService } from '../../../../shared/services/alert.service';
-import { TeamSpaceComponent } from '../team-space/team-space.component';
-import { Subscription } from 'rxjs';
+import { Space } from '../../../team/models/space';
+import { SpaceService } from '../../../team/services/space.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-add-space-model',
+  selector: 'app-add-project-modal',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './add-space-model.component.html',
-  styleUrl: './add-space-model.component.css',
+  templateUrl: './add-project-modal.component.html',
+  styleUrl: './add-project-modal.component.css'
 })
-export class AddSpaceModelComponent implements OnInit {
+export class AddProjectModalComponent implements OnInit {
   @Input() isModalOpen: boolean = false;
   @Output() closeModalEvent = new EventEmitter<void>();
 

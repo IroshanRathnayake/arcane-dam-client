@@ -1,6 +1,6 @@
-<div class="h-100 bg-gray-50">
+<div class="h-full bg-gray-50 max-md:max-w-full">
   <!-- Header -->
-  <div class="flex justify-between items-center mb-8">
+  <div class="flex justify-between items-center mb-5 pl-8 pr-8 ">
     <h1 class="text-lg font-semibold text-gray-800">Projects</h1>
     <button
       class="bg-blue-500 text-sm hover:bg-customBlue-600 text-white hover:text-white px-4 py-1 rounded-md transition-colors"
@@ -10,7 +10,7 @@
   </div>
 
   <!-- Kanban Board -->
-  <div class="flex gap-6 overflow-x-auto pb-4">
+  <div class="flex gap-8 overflow-x  pb-4 ml-10">
     <div
       *ngFor="let column of columns"
       class="flex-shrink-0 w-80 bg-gray-100 rounded-xl p-4"
