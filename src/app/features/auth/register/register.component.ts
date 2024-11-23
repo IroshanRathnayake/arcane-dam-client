@@ -76,7 +76,7 @@ export class RegisterComponent implements OnInit{
       }
 
       this.user = {
-        useName: username,
+        userName: username,
         firstName: firstname,
         lastName: lastname,
         email: email,
@@ -96,36 +96,12 @@ export class RegisterComponent implements OnInit{
         error: (error) => {
           this.isLoading = false;
           this.error = error.error.message || 'An error occurred during registration';
-  
-          const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-5 rounded",
-            },
-            buttonsStyling: false
-          });
-  
-          swalWithBootstrapButtons.fire({
-            title: "Login Failed",
-            text: this.error,
-            icon: "error",
-          });
+          this.alertService.showAlert('error', this.error);
         }
       });
     } else {
       this.error = 'Please fill all required fields correctly.';
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-5 rounded",
-        },
-        buttonsStyling: false
-      });
-
-      swalWithBootstrapButtons.fire({
-        title: "Login Failed",
-        text: this.error,
-        icon: "error",
-      });
-      
+      this.alertService.showAlert('error', this.error);
       this.isLoading = false;
     }
   }

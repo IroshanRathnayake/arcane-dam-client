@@ -2,7 +2,7 @@ import { Space } from "../../features/team/models/space";
 
 export interface User {
     id?: string;
-    useName: string;
+    userName: string;
     firstName: string;
     lastName: string;
     email: string;

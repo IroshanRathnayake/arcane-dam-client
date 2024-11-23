@@ -69,13 +69,15 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          console.log(response);
+          localStorage.setItem('tempUser', JSON.stringify(response));
         })
       );
   }
-  async verifyOtp(username:string, otp: string): Promise<Observable<AuthResponse>> {
+
+  async verifyOtp(otp: string): Promise<Observable<AuthResponse>> {
+    const userName = this.getTempUser()?.email;
     return this.http
-      .post<AuthResponse>(`${this.API_URL}/verify`, { username,otp }, {
+      .post<AuthResponse>(`${this.API_URL}/verify`, { userName, otp }, {
         responseType: 'json',
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -83,17 +85,11 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          Cookies.set('token', response.token, { expires: 1 / 24 });
-          localStorage.setItem('user', JSON.stringify(response.user));
-          localStorage.setItem('spaces', JSON.stringify(response.user.spaces));
-          this.currentUserSubject.next(response.user);
-          sessionStorage.setItem('oneTimeData', 'false');
+          this.router.navigate(['auth/login']);
         })
       );
   }
-
-
-
+  
   logout(): void {
     Cookies.remove('token');
     localStorage.removeItem('user');
@@ -114,6 +110,15 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const parsedUser: User = JSON.parse(savedUser);
+      return parsedUser;
+    }
+    return null;
+  }
+
+  getTempUser(): User | null{
+    const savedUser = localStorage.getItem('tempUser');
     if (savedUser) {
       const parsedUser: User = JSON.parse(savedUser);
       return parsedUser;
