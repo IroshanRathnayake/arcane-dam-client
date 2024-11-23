@@ -10,11 +10,12 @@ import { SpaceService } from '../../services/space.service';
 import { Alert, AlertService } from '../../../../shared/services/alert.service';
 import { AddProjectModalComponent } from "../../../projects/components/add-project-modal/add-project-modal.component";
 import { TeamPermissionComponent } from "../team-permission/team-permission.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-team-space',
   standalone: true,
-  imports: [CommonModule, FormsModule, AddSpaceModelComponent, AddProjectModalComponent, TeamPermissionComponent],
+  imports: [CommonModule, FormsModule, AddSpaceModelComponent, AddProjectModalComponent, TeamPermissionComponent, RouterLink],
   templateUrl: './team-space.component.html',
   styleUrl: './team-space.component.css',
 })
@@ -179,14 +180,12 @@ export class TeamSpaceComponent implements OnInit {
       }
     }
   }
-  removeSpace(space: string): void {
-    // this.teamSpaces = this.teamSpaces.filter(s => s !== space);
-  }
 
   toggleSpace(index: number): void {
     this.isSpaceVisible = !this.isSpaceVisible;
     this.selectedSpaceIndex === index ? !this.isSubmenuOpen : true;
-  this.selectedSpaceIndex = index;
+    this.selectedSpaceIndex = index;
+    localStorage.setItem('selectedSpaceIndex', this.selectedSpaceIndex.toString());
   }
 
   toggleActions(): void {

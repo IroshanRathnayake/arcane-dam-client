@@ -2,21 +2,26 @@
 <app-spinner></app-spinner>
 }
 
-<div class="alerts-container mt-3">
+<div class="alerts-container mt-3" >
   <app-alerts *ngFor="let alert of alerts" [alert]="alert"></app-alerts>
 </div>
 
-<div class="flex bg-gray-50">
+<div class="flex h-screen bg-gray-50" *ngIf="!isLoading">
   <!-- Left Content -->
   <app-sidebar></app-sidebar>
 
   <div class="ml-60 w-[90%]">
     <!-- Main Content --> 
-    <app-navbar
+    <div>
+      <app-navbar
      (toggleNotesEvent)="isNotesOpen = $event"
      (toggleBookmarksEvent)="isBookmarksOpen = $event"
     ></app-navbar>
+    </div>
     <router-outlet></router-outlet>
+    <div #messageContainer class="message-container flex-1 overflow-y-auto p-4 bg-gray-50">
+      <app-chat></app-chat>
+    </div>
   </div>
 
   <!-- Right Content -->
@@ -29,6 +34,8 @@
     <app-bookmarks-sidebar></app-bookmarks-sidebar>
   </div>
 </div>
+
+
 
 <div *ngIf="isCookieModalOpen">
   <app-cookie-modal></app-cookie-modal>

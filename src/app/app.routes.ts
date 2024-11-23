@@ -12,6 +12,9 @@ import { AssetListComponent } from './features/assets/components/asset-list/asse
 import { DashboardBaseComponent } from './features/dashboard/dashboard-base/dashboard-base.component';
 import { AssetsBaseComponent } from './features/assets/components/assets-base/assets-base.component';
 import { OtpComponent } from './features/auth/otp/otp.component';
+import { AccessDeniedComponent } from './shared/components/exception-pages/access-denied/access-denied.component';
+import { NotFoundComponent } from './shared/components/exception-pages/not-found/not-found.component';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -45,7 +48,9 @@ export const routes: Routes = [
           },
           {
             path: 'projects',
-            component: ProjectDetailsComponent
+            component: ProjectDetailsComponent,
+            canActivate: [RoleGuard],
+            data: { role: 'admin' }
           },
           {
             path: 'board',
@@ -61,7 +66,15 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'access-denied',
+    component: AccessDeniedComponent
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent
+  },
+  {
     path: '**',
-    redirectTo: 'auth/login'
+    redirectTo: 'not-found'
   }
 ];

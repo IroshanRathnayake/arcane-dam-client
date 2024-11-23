@@ -1,63 +1,527 @@
 <main>
-    <div class="mt-4 mr-5 ml-5 max-md:mr-2.5 max-md:max-w-full ">
-      <div class="flex gap-5 max-md:flex-col">
-        <section class="flex flex-col w-[60%] max-md:ml-0 max-md:w-full">
-          <div
-            class="flex justify-between items-start pt-3.5 pr-4 pb-48 pl-4 mx-auto w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mt-3"
-          >
-            <h2 class="text-sm font-semibold text-gray-700">
-              Team Assets
-            </h2>
-            <h2 class="text-customBlue-500 cursor-pointer text-xs mt-1">
-              + Add New 
+  <!-- Filters -->
+  <div class="flex justify-end mr-10 mt-5">
+    <div></div>
+  </div>
+  <div class="mt-4 mr-5 ml-5 max-md:mr-2.5 max-md:max-w-full">
+    <div class="flex gap-0 max-md:flex-col">
+      <section class="flex flex-col w-[60%] max-md:ml-0 max-md:w-full">
+        <div
+          class="pt-3.5 pr-4 pb-48 pl-4 mx-auto w-full h-[110%] text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:pb-24 max-md:mt-3"
+        >
+          <div class="flex justify-between items-start">
+            <div class="flex items-center">
+              <h2 class="text-sm font-semibold text-gray-700 mr-2">
+                Team Assets
+              </h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                class="size-5 cursor-pointer text-gray-700"
+                *ngIf="isFolderSelected"
+                (click)="isFolderSelected = false; selectedTab = 'All'"
+              >
+                >
+                <path
+                  fill-rule="evenodd"
+                  d="M12.5 9.75A2.75 2.75 0 0 0 9.75 7H4.56l2.22 2.22a.75.75 0 1 1-1.06 1.06l-3.5-3.5a.75.75 0 0 1 0-1.06l3.5-3.5a.75.75 0 0 1 1.06 1.06L4.56 5.5h5.19a4.25 4.25 0 0 1 0 8.5h-1a.75.75 0 0 1 0-1.5h1a2.75 2.75 0 0 0 2.75-2.75Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <h2
+              class="text-customBlue-500 cursor-pointer text-xs font-medium mt-1 mr-3"
+              (click)="openModal()"
+            >
+              + Add New
             </h2>
           </div>
-        </section>
-        <section class="flex flex-col ml-5 w-[40%] max-md:ml-0 max-md:w-full">
+
+          <!-- Tabs -->
           <div
-            class="flex flex-col grow pt-3.5 pr-14 pl-4 w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:mt-3"
+            class="flex space-x-4 text-xs font-medium mt-3"
+            *ngIf="!isFolderSelected"
           >
-            <h2
-              class="text-sm font-semibold text-gray-700"
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'All',
+                'text-gray-600 hover:text-gray-800': selectedTab !== 'All'
+              }"
+              (click)="selectTab('All')"
             >
-              Assets Meta Data
-            </h2>
-  
-            <div class="flex items-center justify-center w-full mt-6">
-              <label
-                for="dropzone-file"
-                class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
-              >
-                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg
-                    class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 16"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                    />
-                  </svg>
-                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold">Click to upload</span> or drag and
-                    drop
-                  </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF (MAX. 800x400px)
-                  </p>
-                </div>
-                <input id="dropzone-file" type="file" class="hidden" />
-              </label>
+              Folders
+            </button>
+          </div>
+
+          <!-- Tabs -->
+          <div
+            class="flex space-x-4 text-xs font-medium mt-3"
+            *ngIf="isFolderSelected"
+          >
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'All',
+                'text-gray-600 hover:text-gray-800': selectedTab !== 'All'
+              }"
+              (click)="selectTab('All')"
+            >
+              All
+            </button>
+
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'image/png',
+                'text-gray-600 hover:text-gray-800': selectedTab !== 'image/png'
+              }"
+              (click)="selectTab('image/png')"
+            >
+              Images
+            </button>
+
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'application/pdf',
+                'text-gray-600 hover:text-gray-800':
+                  selectedTab !== 'application/pdf'
+              }"
+              (click)="selectTab('application/pdf')"
+            >
+              Docs
+            </button>
+
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'Video',
+                'text-gray-600 hover:text-gray-800': selectedTab !== 'Video'
+              }"
+              (click)="selectTab('Video')"
+            >
+              Video
+            </button>
+
+            <button
+              class="px-4 py-2"
+              [ngClass]="{
+                'text-customBlue-500 border-b-2 border-customBlue-700':
+                  selectedTab === 'Audio',
+                'text-gray-600 hover:text-gray-800': selectedTab !== 'Audio'
+              }"
+              (click)="selectTab('Audio')"
+            >
+              Audio
+            </button>
+          </div>
+
+          <!-- Folders -->
+          <div class="flex flex-wrap gap-4 mt-4" *ngIf="!isFolderSelected">
+            <div
+              class="w-[23%] p-4 bg-gray-50 cursor-pointer rounded-md hover:bg-gray-100"
+              *ngFor="let folder of folders"
+            >
+              <!-- Folder -->
+              <div class="flex items-center" (click)="selectFolder(folder)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-gray-700 mr-3"
+                >
+                  <path
+                    d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z"
+                  />
+                </svg>
+                <span class="text-gray-700 text-xs font-medium">{{
+                  folder.date
+                }}</span>
+              </div>
             </div>
           </div>
-        </section>
+
+          <!-- Data -->
+          <div class="mt-4" *ngIf="isFolderSelected">
+            <!-- Table -->
+            <table class="min-w-full bg-white mt-3">
+              <tbody class="whitespace-nowrap">
+                <ng-container *ngFor="let row of dataList; let i = index">
+                  <tr
+                    *ngIf="
+                      row.fileType === selectedTab || selectedTab === 'All'
+                    "
+                    class="odd:bg-gray-100"
+                    (click)="onSelectAsset(row)"
+                  >
+                    <td class="pl-4 w-8 -z-10">
+                      <input
+                        id="checkbox2"
+                        type="checkbox"
+                        class="hidden peer"
+                      />
+                      <label
+                        for="checkbox2"
+                        class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden z-10"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="w-full fill-white -z-10"
+                          viewBox="0 0 520 520"
+                        >
+                          <path
+                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                            data-name="7-Check"
+                            data-original="#000000"
+                          />
+                        </svg>
+                      </label>
+                    </td>
+                    <td class="p-4 text-sm text-gray-800">
+                      <div class="flex items-center cursor-pointer">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625Z"
+                          />
+                          <path
+                            d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z"
+                          />
+                        </svg>
+
+                        <div class="ml-4">
+                          <p class="text-sm text-gray-800">
+                            {{ row.fileName }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-4 text-sm text-gray-800">
+                      {{ row.fileSize }}
+                    </td>
+                    <td
+                      class="p-4 text-sm text-gray-800 max-h-[100px] overflow-y-auto break-words"
+                    >
+                      {{ row.fileType }}
+                    </td>
+
+                    <td class="p-4 text-sm text-gray-800">
+                      <p class="text-sm text-gray-600">
+                        {{ row.uploadTimestamp.toString().split("T")[0] }}
+                      </p>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section class="flex flex-col ml-5 w-[40%] max-md:ml-0 max-md:w-full">
+        <div
+          class="flex flex-col grow pt-3.5 pr-14 pl-4 w-full text-sm leading-relaxed bg-white rounded-lg border border-solid border-zinc-100 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] max-md:pr-5 max-md:mt-3"
+        >
+          <h2 class="text-sm font-semibold text-gray-700">Assets Meta Data</h2>
+
+          <section>
+            <div class="flex mt-3" *ngIf="selectedAsset">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 6h.008v.008H6V6Z"
+                />
+              </svg>
+              <span
+                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-blue-900 dark:text-blue-300"
+                >Assets</span
+              >
+              <span
+                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-gray-700 dark:text-gray-300"
+                >Digital</span
+              >
+              <span
+                class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-green-900 dark:text-green-300"
+                >Meta</span
+              >
+              <span
+                class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300"
+                >File</span
+              >
+            </div>
+
+            <div class="flex flex-col justify-center items-center px-4">
+              <div
+                role="status"
+                class="flex items-center justify-center h-56 w-56 bg-gray-300 mt-5 rounded-lg animate-pulse dark:bg-gray-700"
+              >
+                <svg
+                  class="w-12 h-12 text-gray-200 dark:text-gray-600"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 16 20"
+                >
+                  <path
+                    d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"
+                  />
+                  <path
+                    d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM9 13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2Zm4 .382a1 1 0 0 1-1.447.894L10 13v-2l1.553-1.276a1 1 0 0 1 1.447.894v2.764Z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Metadata Section -->
+              <section class="mt-6 w-full max-w-md">
+                <div
+                  *ngIf="selectedAsset; else noSelection"
+                  class="rounded-lg p-4 space-y-3"
+                >
+                  <h3 class="text-lg font-semibold text-gray-900">
+                    Asset Metadata
+                  </h3>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Asset ID:</h4>
+                    <p class="text-sm text-gray-600">
+                      {{ selectedAsset.id }}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Name:</h4>
+                    <p class="text-sm text-gray-600">
+                      {{ selectedAsset.fileName }}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Size:</h4>
+                    <p class="text-sm text-gray-600">
+                      {{ selectedAsset.fileSize }}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Type:</h4>
+                    <p class="text-sm text-gray-600">
+                      {{ selectedAsset.fileSize }}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">URL:</h4>
+                    <p class="text-sm text-gray-600">
+                      <a
+                        [href]="selectedAsset.fileUrl"
+                        class="text-blue-500 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {{ selectedAsset.fileUrl }}
+                      </a>
+                    </p>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Status:</h4>
+                    <span
+                      class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-green-900 dark:text-green-300"
+                      >Active</span
+                    >
+                  </div>
+
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-700">Date:</h4>
+                    <p class="text-sm text-gray-600">
+                      {{
+                        selectedAsset.uploadTimestamp.toString().split("T")[0]
+                      }}
+                    </p>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="flex justify-between items-center mt-4">
+                    <button
+                      class="flex items-center space-x-2 px-4 py-2 text-white bg-blue-50 rounded-md shadow"
+                      (click)="downloadAsset(selectedAsset)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-4 text-customBlue-500"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      class="flex items-center space-x-2 px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md shadow"
+                      (click)="deleteAsset(selectedAsset.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-4"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- No Selection Message -->
+                <ng-template #noSelection>
+                  <p class="text-gray-600 text-center mb-3">
+                    Select an asset to view its metadata.
+                  </p>
+                </ng-template>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div
+  *ngIf="isModalOpen"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div
+    class="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full relative animate-fade-in"
+  >
+    <!-- Modal Header -->
+    <div
+      class="flex items-center justify-between pb-3 border-b border-gray-200"
+    >
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800">Upload Files</h3>
+        <p class="text-sm text-gray-600">Upload files to this project</p>
+      </div>
+      <button class="text-gray-500 hover:text-red-500" (click)="closeModal()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Drag & Drop Area -->
+    <div
+      class="mt-6 rounded-lg border-2 border-dashed border-gray-300"
+      (drop)="onFileDrop($event)"
+      (dragover)="onDragOver($event)"
+    >
+      <div
+        class="p-6 flex flex-col items-center justify-center text-center cursor-pointer"
+        (click)="fileInput.click()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-8 h-8 mb-3 text-gray-600"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.47 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06l-3.22-3.22V16.5a.75.75 0 0 1-1.5 0V4.81L8.03 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5ZM3 15.75a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <h4 class="text-sm text-gray-600">
+          Drag & Drop or
+          <label for="chooseFile" class="text-customBlue-500 cursor-pointer"
+            >Choose file</label
+          >
+          to upload
+        </h4>
+        <input
+          type="file"
+          id="chooseFile"
+          class="hidden"
+          (change)="onFileChange($event)"
+          #fileInput
+          multiple
+        />
       </div>
     </div>
-  </main>
-  
+
+    <!-- Selected Files List -->
+    <div class="mt-4 space-y-2">
+      <div
+        *ngFor="let file of files; let i = index"
+        class="flex justify-between items-center p-2 bg-gray-100 rounded-md"
+      >
+        <span class="text-gray-800 text-sm truncate">{{ file.name }}</span>
+        <button
+          (click)="removeFile(i)"
+          class="text-red-500 hover:underline text-xs"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Actions -->
+    <div class="flex justify-end space-x-4 mt-6">
+      <button
+        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+        (click)="closeModal()"
+      >
+        Cancel
+      </button>
+      <button
+        class="px-4 py-2 bg-customBlue-500 text-sm hover:bg-customBlue text-white rounded-lg hover:bg-customBlue-700"
+        (click)="onUpload()"
+      >
+        Upload
+      </button>
+    </div>
+  </div>
+</div>

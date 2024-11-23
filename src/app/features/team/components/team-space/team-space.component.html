@@ -44,23 +44,24 @@
     (closeModalEvent)="closeAddNewProjectModal()"
   ></app-add-project-modal>
 
-   <!-- Team Permission Modal -->
-   <app-team-permission
-   [isModalOpen]="isPermissionModalOpen"
-   (closeModalEvent)="closePermissionModal()"
- ></app-team-permission>
+  <!-- Team Permission Modal -->
+  <app-team-permission
+    [isModalOpen]="isPermissionModalOpen"
+    (closeModalEvent)="closePermissionModal()"
+  ></app-team-permission>
 
   <div class="space-y-1 mt-2">
     <a *ngFor="let space of spaces; let i = index" class="cursor-pointer">
       <div
-      class="flex items-center justify-between px-2 py-2 text-gray-700 rounded-lg hover:bg-customBlue-50 group"
-      (click)="toggleSpace(i)"
-      [ngClass]="{
-        'font-medium text-customBlue-500 bg-blue-50': selectedSpaceIndex === i,
-        'text-gray-700': selectedSpaceIndex !== i
-      }"
-    >
-        <div class="flex items-center space-x-2">
+        class="flex items-center justify-between px-2 py-2 text-gray-700 rounded-lg hover:bg-customBlue-50 group"
+        (click)="toggleSpace(i)"
+        [ngClass]="{
+          'font-medium text-customBlue-500 bg-blue-50':
+            selectedSpaceIndex === i,
+          'text-gray-700': selectedSpaceIndex !== i
+        }"
+      >
+        <div class="flex items-center space-x-2" routerLink="/dashboard">
           <svg
             class="w-5 h-5"
             fill="none"
@@ -102,7 +103,7 @@
 
         <div
           *ngIf="isSubmenuOpen && selectedSpaceIndex === i"
-          class="absolute bg-white shadow-md rounded-md p-1 mt-28 z-50 ml-48 w-[58%]"
+          class="absolute bg-white shadow-md rounded-md p-1 mt-28 z-[1000] ml-48 w-[58%]"
         >
           <ul class="space-y-2">
             <li
@@ -255,7 +256,11 @@
         *ngIf="isSpaceVisible && selectedSpaceIndex === i"
         class="flex justify-between gap-2.5 mt-1 ml-9 mb-2 leading-loose whitespace-nowrap cursor-pointer text-gray-600 max-md:ml-2.5 group"
       >
-        <div class="flex items-center gap-2" (click)="handleProject(i)">
+        <div
+          class="flex items-center gap-2"
+          (click)="handleProject(i)"
+          routerLink="board"
+        >
           <svg
             *ngIf="!isFolderOpen"
             xmlns="http://www.w3.org/2000/svg"
@@ -302,6 +307,7 @@
       <div
         *ngIf="isSpaceVisible && selectedSpaceIndex === i && isProjectOpen"
         class="flex gap-2.5 mt-3 ml-20 mb-2 leading-loose whitespace-nowrap cursor-pointer text-gray-600 max-md:ml-2.5"
+        routerLink="assets"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -314,11 +320,11 @@
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
           />
         </svg>
 
-        <div class="text-xs">Teams</div>
+        <div class="text-xs font-medium">Assets</div>
       </div>
     </a>
   </div>

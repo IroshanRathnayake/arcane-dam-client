@@ -188,7 +188,7 @@
         class="flex gap-5 justify-between mr-5 ml-3 text-xs max-md:mr-2.5"
       >
         <div
-          class="flex gap-0.5 px-2 py-1 text-gray-500 whitespace-nowrap bg-white rounded-xl border border-gray-200 border-solid shadow-[0px_0px_2px_rgba(23,26,31,0.12)]"
+          class="flex gap-0.5 px-2 py-1 text-gray-500 whitespace-nowrap bg-white rounded-xl border border-gray-200 border-solid shadow-[0px_0px_2px_rgba(23,26,31,0.12)] cursor-pointer"
         >
           <img
             loading="lazy"
@@ -229,11 +229,13 @@
             <div
               class="px-4 py-0.5 space-x-1 text-customBlue-600 rounded-xl border flex justify-between border-violet-50 border-solid bg-blue-600 bg-opacity-10 shadow-[0px_0px_2px_rgba(23,26,31,0.12)] cursor-pointer"
             >
-              <img
-                class="w-4 h-4 opacity-40 hover:opacity-60"
-                src="assets/icons/dashboard/refresh.png"
-                alt="Refresh"
-              />
+            <img
+            class="w-4 h-4 opacity-60 hover:opacity-90"
+            src="assets/icons/dashboard/refresh.png"
+            alt="Refresh"
+            [ngClass]="{ 'rotate-animation': isRotating }"
+            (click)="refreshIcon()"
+          />
               <span>Refresh</span>
             </div>
           </div>

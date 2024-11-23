@@ -129,4 +129,27 @@ export class AuthService {
     }
     return null;
   }
+
+  getCurrentSpaceID(): any | null {
+    const spaceIndexStr = localStorage.getItem('selectedSpaceIndex');
+    const spacesStr = localStorage.getItem('spaces');
+
+    if (spaceIndexStr && spacesStr) {
+      const spaceIndex = parseInt(spaceIndexStr, 10);
+      const spaces = JSON.parse(spacesStr);
+
+      if (
+        Array.isArray(spaces) &&
+        spaceIndex >= 0 &&
+        spaceIndex < spaces.length
+      ) {
+        var spaceId = spaces[spaceIndex].id;
+        return spaceId;
+      } else {
+        console.error('Invalid space index or spaces array is empty.');
+      }
+    } else {
+      console.error('spaceId or spaces is missing in localStorage.');
+    }
+  }
 }
