@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   constructor(private alertService: AlertService){
     setTimeout(()=>{
       this.isLoading = false;
-    },100);
+    },2000);
 
   }
   ngOnInit(): void {
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
         sessionStorage.setItem('oneTimeData', 'true');
         this.isLoggedIn = true;
       }
-    }, 3500);
+    }, 3000);
   }
 
   isNotesOpen = false;
